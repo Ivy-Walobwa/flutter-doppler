@@ -1,16 +1,13 @@
 # flutter_doppler
 
-A new Flutter project.
+Use secrets stored in doppler in your Flutter app. 
 
-## Getting Started
+Once you've added your secrets and installed the dopler cli, follow the following steps to run project locally:
 
-This project is a starting point for a Flutter application.
+1. Login using `doppler login`
+2. Move to project directory and run `doppler setup`
+3. Run the `script.sh` file. ie Execute `./script.sh` on project dir.
 
-A few resources to get you started if this is your first Flutter project:
-
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
-
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+Note: 
+- You can use your preferred device id on script file. eg `flutter run -d <deviceid>`
+- Ensure you replace the config file with the correct secret name on your doppler account - in case you named them differently. 
