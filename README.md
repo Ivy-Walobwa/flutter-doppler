@@ -2,7 +2,7 @@
 
 Use secrets stored in doppler in your Flutter app. 
 
-Once you've added your secrets and installed the dopler cli, follow the following steps to run project locally:
+Once you've added your secrets and installed the dopler cli, follow the steps below to run project locally:
 
 1. Login using `doppler login`
 2. Move to project directory and run `doppler setup`
