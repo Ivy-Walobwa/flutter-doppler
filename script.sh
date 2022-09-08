@@ -6,3 +6,4 @@ for secret in $(doppler secrets download --no-file --format env-no-quotes); do
 done
 
 eval $cmd
+

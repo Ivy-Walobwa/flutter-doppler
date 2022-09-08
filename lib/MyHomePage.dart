@@ -20,8 +20,6 @@ class _MyHomePageState extends State<MyHomePage> {
 
   @override
   Widget build(BuildContext context) {
-    const imageBaseUrl = "https://image.tmdb.org/t/p/w500/";
-
     return Scaffold(
       appBar: AppBar(
         title: const Text("Movie App"),
@@ -38,13 +36,13 @@ class _MyHomePageState extends State<MyHomePage> {
                       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                       children: [
                         Image.network(
-                          imageBaseUrl + snapshot.data![index].posterPath,
+                          "https://images.quotable.dev/profile/400/${snapshot.data![index].slug}.jpg",
                           height: 150,
                         ),
                         Padding(
                           padding: const EdgeInsets.all(8.0),
                           child: Text(
-                            snapshot.data![index].title,
+                            snapshot.data![index].name,
                           ),
                         ),
                       ],
