@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import 'movie_service.dart';
+import 'author_service.dart';
 
 class MyHomePage extends StatefulWidget {
   const MyHomePage({Key? key}) : super(key: key);
@@ -22,14 +22,14 @@ class _MyHomePageState extends State<MyHomePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text("Movie App"),
+        title: const Text("Author App"),
       ),
       body: FutureBuilder<List<Movie>>(
           future: futureMovies,
           builder: (context, snapshot) {
             if (snapshot.hasData) {
               return GridView.count(
-                crossAxisCount: 2,
+                crossAxisCount: 4,
                 children: List.generate(snapshot.data!.length, (index) {
                   return Card(
                     child: Column(
@@ -37,7 +37,7 @@ class _MyHomePageState extends State<MyHomePage> {
                       children: [
                         Image.network(
                           "https://images.quotable.dev/profile/400/${snapshot.data![index].slug}.jpg",
-                          height: 150,
+                          height: 250,
                         ),
                         Padding(
                           padding: const EdgeInsets.all(8.0),
