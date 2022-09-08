@@ -1,0 +1,70 @@
+workflows:
+  default-workflow:
+    name: Default Workflow
+    max_build_duration: 60
+    environment:
+      vars:
+        DOPPLER_ENV: codemagic
+        DOPPLER_TOKEN: Encrypted(Z0FBQUFBQmpHV1NCV1YtYWowdXpyQ3lLXzNGdFpWU2dNS0RUM1JfODlPMkI3TXpaYkxuUWVtMTJpMy1JNjNCSnRyaE1Pcmo1azJ2ZFkzdjhlenhQY0Y2amFBZXdoRTk4LVhuX3c3c3hvNTlSVXNDd2lUaXhQc0NNR3laV2ZsSE44V0kzeDZiWE94ZG1SeFpBTjdMYjF6SFhKX0ZXNTJILTZ3PT0=)
+      flutter: default
+      xcode: latest
+      cocoapods: default
+    triggering:
+      events:
+        - push
+      branch_patterns:
+        - pattern: '*'
+          include: true
+          source: true
+      tag_patterns:
+        - pattern: '*'
+          include: true
+    scripts:
+      - |
+        # set up debug keystore
+        rm -f ~/.android/debug.keystore
+        keytool -genkeypair \
+          -alias androiddebugkey \
+          -keypass android \
+          -keystore ~/.android/debug.keystore \
+          -storepass android \
+          -dname 'CN=Android Debug,O=Android,C=US' \
+          -keyalg 'RSA' \
+          -keysize 2048 \
+          -validity 10000
+      - |
+        # set up local properties
+        echo "flutter.sdk=$HOME/programs/flutter" > "$FCI_BUILD_DIR/android/local.properties"
+      - |
+        - name: Install Doppler on MacOS
+          script: |
+            brew install gnupg
+            brew install dopplerhq/cli/doppler
+      - flutter packages pub get
+      - flutter config --enable-web
+      - |
+        # build web
+        #!/usr/bin/env bash
+        cmd="flutter build web --release"
+
+        for secret in $(doppler secrets download --no-file --format env-no-quotes --token $DOPPLER_TOKEN); do
+          cmd="${cmd} --dart-define=${secret}"
+        done
+
+        eval $cmd
+      - |
+        # web artifacts
+        cd build/web
+        7z a -r ../web.zip ./*
+    artifacts:
+      - build/**/outputs/apk/**/*.apk
+      - build/**/outputs/bundle/**/*.aab
+      - build/**/outputs/**/mapping.txt
+      - build/web.zip
+      - '*.snap'
+      - build/windows/**/*.msix
+      - flutter_drive.log
+    publishing:
+      email:
+        recipients:
+          - ivywalobwa@gmail.com
