@@ -36,10 +36,9 @@ workflows:
         # set up local properties
         echo "flutter.sdk=$HOME/programs/flutter" > "$FCI_BUILD_DIR/android/local.properties"
       - |
-        - name: Install Doppler on MacOS
-          script: |
-            brew install gnupg
-            brew install dopplerhq/cli/doppler
+        # Install Doppler on MacOS
+        brew install gnupg
+        brew install dopplerhq/cli/doppler
       - flutter packages pub get
       - flutter config --enable-web
       - |
