@@ -5,7 +5,7 @@ workflows:
     environment:
       vars:
         DOPPLER_ENV: codemagic
-        DOPPLER_TOKEN: Encrypted(Z0FBQUFBQmpHV1NCV1YtYWowdXpyQ3lLXzNGdFpWU2dNS0RUM1JfODlPMkI3TXpaYkxuUWVtMTJpMy1JNjNCSnRyaE1Pcmo1azJ2ZFkzdjhlenhQY0Y2amFBZXdoRTk4LVhuX3c3c3hvNTlSVXNDd2lUaXhQc0NNR3laV2ZsSE44V0kzeDZiWE94ZG1SeFpBTjdMYjF6SFhKX0ZXNTJILTZ3PT0=)
+        DOPPLER_TOKEN: Encrypted(Z0FBQUFBQmpHWEtjeU1EdjdpSWs4WWE3QTBockpLUDNzY25UakVPcjlGckNhMmF5WURJbC1Kek84YmRjWW5WY1M4UGlyVmtodVo4NUdqXzVFSGlTbEVCSlhCQkxHeU4wcFdSaS1yMThYalM2SUdSeldIelpJcDVWSU00aldyMll4QXJoYWNVZmNzWWxxSDM5YTBkNkM1MEhKaUh1SC1HMDh3PT0=)
       flutter: default
       xcode: latest
       cocoapods: default
@@ -36,23 +36,18 @@ workflows:
         # set up local properties
         echo "flutter.sdk=$HOME/programs/flutter" > "$FCI_BUILD_DIR/android/local.properties"
       - |
-        # Install Doppler on MacOS
-        brew install gnupg
-        brew install dopplerhq/cli/doppler
+        - name: Install Doppler on MacOS
+          script: |
+            brew install gnupg
+            brew install dopplerhq/cli/doppler
       - flutter packages pub get
       - flutter config --enable-web
+      - doppler secrets download --no-read-env --no-file --format env-no-quotes --config
+        $DOPPLER_ENV --token $DOPPLER_TOKEN >> $CM_ENV
+      - flutter build appbundle --release --dart-define=MOVIE_DB_API_KEY=$MOVIE_DB_API_KEY --dart-define=MOVIE_DB_BASE_URL=$MOVIE_DB_BASE_URL
       - |
         # build web
-        #!/usr/bin/env bash
-        cmd="flutter build web --release"
-
-        for secret in $(doppler secrets download --no-file --format env-no-quotes --token $DOPPLER_TOKEN); do
-          cmd="${cmd} --dart-define=${secret}"
-        done
-
-        eval $cmd
-      - |
-        # web artifacts
+        flutter build web --release --dart-define=MOVIE_DB_API_KEY=$MOVIE_DB_API_KEY --dart-define=MOVIE_DB_BASE_URL=$MOVIE_DB_BASE_URL
         cd build/web
         7z a -r ../web.zip ./*
     artifacts:

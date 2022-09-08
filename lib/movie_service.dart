@@ -28,7 +28,7 @@ class MovieService {
   final apiUrl = EnvironmentConfig.MOVIE_DB_BASE_URL;
   Future<List<Movie>> fetchMovies() async {
     final response = await http.get(
-        Uri.parse('$apiUrl/popular/?api_key=$apiKey&language=en-US&page=1'));
+        Uri.parse('$apiUrl/popular/?api_key=$apiKey&language=en-US&page=1/'));
 
     if (response.statusCode == 200) {
       List<dynamic> results = jsonDecode(response.body)["results"];
