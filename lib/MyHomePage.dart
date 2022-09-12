@@ -15,7 +15,7 @@ class _MyHomePageState extends State<MyHomePage> {
   @override
   void initState() {
     super.initState();
-    futureMovies = MovieService().fetchMovies();
+    futureMovies = AuthorService().fetchMovies();
   }
 
   @override

@@ -9,17 +9,17 @@ class Movie {
   final String name;
   final String slug;
 
-  const Movie({
+  const Movie.Author({
     required this.id,
     required this.name,
     required this.slug,
   });
   factory Movie.fromJson(Map<String, dynamic> json) {
-    return Movie(id: json['_id'], name: json['name'], slug: json['slug']);
+    return Movie.Author(id: json['_id'], name: json['name'], slug: json['slug']);
   }
 }
 
-class MovieService {
+class AuthorService {
   final apiUrl = EnvironmentConfig.AUTHORS_DB_BASE_URL;
   Future<List<Movie>> fetchMovies() async {
     final response = await http.get(Uri.parse(apiUrl));
