@@ -10,7 +10,7 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  late Future<List<Movie>> futureMovies;
+  late Future<List<Author>> futureMovies;
 
   @override
   void initState() {
@@ -24,7 +24,7 @@ class _MyHomePageState extends State<MyHomePage> {
       appBar: AppBar(
         title: const Text("Author App"),
       ),
-      body: FutureBuilder<List<Movie>>(
+      body: FutureBuilder<List<Author>>(
           future: futureMovies,
           builder: (context, snapshot) {
             if (snapshot.hasData) {
